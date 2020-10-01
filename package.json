@@ -1,0 +1,13 @@
+{
+  "name": "aoc2018",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "day1": "node days/day1.js",
+    "day2": "node days/day2.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
