@@ -41,17 +41,62 @@
  */
 const fileUtils = require('../utils/file-utils');
 
-const boxIds = fileUtils
-    .readInputLines('day2.txt');
+partOne();
+partTwo();
 
-const repeatMapList = getRepeatMapList(boxIds);
+function partOne() {
+    const boxIds = fileUtils
+        .readInputLines('day2.txt');
 
-const twiceCount = getRepeatCount(repeatMapList, 2);
-const thriceCount = getRepeatCount(repeatMapList, 3);
+    const repeatMapList = getRepeatMapList(boxIds);
 
-console.log(`twiceCount: ${twiceCount}`);
-console.log(`thriceCount: ${thriceCount}`);
-console.log(twiceCount * thriceCount);
+    const twiceCount = getRepeatCount(repeatMapList, 2);
+    const thriceCount = getRepeatCount(repeatMapList, 3);
+
+    // console.log(`twiceCount: ${twiceCount}`);
+    // console.log(`thriceCount: ${thriceCount}`);
+    console.log(twiceCount * thriceCount);
+}
+
+function partTwo() {
+    const boxIds = fileUtils
+        .readInputLines('day2.txt');
+    const oneCharMatch = getOneCharMatch(boxIds);
+    console.log(oneCharMatch);
+}
+
+function getOneCharMatch(boxIds) {
+    for (let i = 0; i < boxIds.length - 1; i++) {
+        for (let l = i + 1; l < boxIds.length; l++) {
+            const oneCharMatch = getOneCharMatchFromBoxes(boxIds[i], boxIds[l]);
+            if (oneCharMatch) {
+                return oneCharMatch;
+            }
+        }
+    }
+}
+
+function getOneCharMatchFromBoxes(boxIdA, boxIdB) {
+    for (let i = 0; i < boxIdA.length; i++) {
+        const boxARegex = boxIdToRegex(boxIdA, i);
+        if (boxARegex.test(boxIdB)) {
+            return `${boxIdA.slice(0, i)}${boxIdA.slice(i + 1)}`;
+        }
+    }
+    return false;
+}
+
+function boxIdToRegex(boxId, charIndex) {
+    let _boxId = '';
+    if (charIndex > 0) {
+        _boxId += boxId.slice(0, charIndex);
+    }
+    _boxId += '[a-z]';
+    if(charIndex < _boxId.length - 1) {
+        _boxId += boxId.slice(charIndex + 1)
+    }
+    return new RegExp(_boxId);
+}
 
 function getRepeatCount(repeatMapList, count) {
     return repeatMapList
